@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>{{job.title}} - Jovian Careers</title>
-     <meta charset="utf-8">
     {% include 'bootstrap.html' %}
   </head>
   <body>
@@ -25,10 +24,11 @@
       <ol>
         {% for line in job.requirements.split("\n") %}
           <li>{{line}}</li>
-        {% endfor %}
-            
+        {% endfor %} 
       </ol>
       <p>{{job.requirements}}</p>
+
+      {% include 'application_form.html' %}
     </div>
     {% include 'footer.html' %}
   </body>
