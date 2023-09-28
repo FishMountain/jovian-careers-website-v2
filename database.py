@@ -1,5 +1,6 @@
 import os
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
 
 
 db_connection_string=os.environ['DB_CONNECTION_STRING_JOVIAN_CAREERS_WEBSITE']
@@ -36,15 +37,17 @@ def load_job_from_db(id):
 
 def add_application_to_db(job_id, data):
   with engine.connect() as conn:
-    queryString=text("INSERT INTO applications (job_id, full_name, email, linkin_url, education, work_experience, resume_url) values (" + job_id + ",'" + 
-                     data["full_name"] + "', '" +
-                     data["email"] + "', '" +
-                     data["linkin_url"] + "', '" +
-                     data["education"] + "', '" +
-                     data["work_experience"] + "', '" +
-                     data["resume_url"] + "')"
+    row={
+      "job_id": job_id,
+      "full_name": data["full_name"],
+      "email": data["email"],
+      "linkin_url": data["linkin_url"],
+      "education": data["education"],
+      "work_experience": data["work_experience"],
+      "resume_url": data["resume_url"]
+    }
+    queryString=text("INSERT INTO applications (job_id, full_name, email, linkin_url, education, work_experience, resume_url) VALUES (:job_id, :full_name, :email, :linkin_url, :education, :work_experience, :resume_url)"
     )
   
-    conn.execute(queryString
-                )
+    conn.execute(queryString, row)
     
